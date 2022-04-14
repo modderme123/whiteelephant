@@ -99,11 +99,15 @@ function topBottom(x: number) {
   let out = [];
   for (let i = 0; i < 20; i++) {
     out.push({ time: x * beat + offset, posY: -25 / 2 - Math.sin((i / 20) * Math.PI * 2) * 12.5, posX: -50 + Math.cos((i / 20) * Math.PI * 2) * 12.5, speedX: 2, speedY: 0 });
-    out.push({ time: x * beat + offset, posY: -25 / 2 - Math.sin((i / 20) * Math.PI * 2) * 6, posX: -50 + Math.cos((i / 20) * Math.PI * 2) * 6, speedX: 1, speedY: 0 });
+  }
+  for (let i = 0; i < 4; i++) {
+    out.push({ time: x * beat + offset, posY: -25 / 2 - Math.sin((i / 4) * Math.PI * 2) * 6, posX: -50 + Math.cos((i / 4) * Math.PI * 2) * 6, speedX: 1, speedY: 0 });
   }
   for (let i = 0; i < 20; i++) {
     out.push({ time: (x + 1) * beat + offset, posY: 25 / 2 - Math.sin((i / 20) * Math.PI * 2) * 12.5, posX: -50 + Math.cos((i / 20) * Math.PI * 2) * 12.5, speedX: 2, speedY: 0 });
-    out.push({ time: (x + 1) * beat + offset, posY: 25 / 2 - Math.sin((i / 20) * Math.PI * 2) * 6, posX: -50 + Math.cos((i / 20) * Math.PI * 2) * 6, speedX: 1, speedY: 0 });
+  }
+  for (let i = 0; i < 4; i++) {
+    out.push({ time: (x + 1) * beat + offset, posY: 25 / 2 - Math.sin((i / 4) * Math.PI * 2) * 6, posX: -50 + Math.cos((i / 4) * Math.PI * 2) * 6, speedX: 1, speedY: 0 });
   }
   return out;
 }
@@ -148,7 +152,7 @@ function trill(x: number) {
 function trill2(x: number) {
   let out = [];
   for (let i = 0; i < 20; i++) {
-    // out.push({ time: x * beat + offset, posY: -25 + Math.cos((i / 19 - 0.5) * Math.PI * 2) * 10, posX: -50 + Math.sin((i / 19 - 0.5) * Math.PI * 2) * 10, speedX: 1, speedY: 0.5 });
+    out.push({ time: x * beat + offset, posY: -25 + Math.cos((i / 19 - 0.5) * Math.PI) * 10, posX: -50 + Math.sin((i / 19 - 0.5) * Math.PI) * 10, speedX: 1, speedY: 1 });
     out.push({ time: x * beat + offset, posY: 25 - Math.cos((i / 19 - 0.5) * Math.PI) * 10, posX: -50 + Math.sin((i / 19 - 0.5) * Math.PI) * 10, speedX: 1, speedY: -1 });
   }
   return out;
@@ -234,7 +238,7 @@ let presents: { time: number; posX: number; posY: number; speedX: number; speedY
   ...diamond(28)
 ];
 
-for (let i = 27; i < 1000; i++) {
+for (let i = 31; i < 1000; i++) {
   presents.push({ time: i * beat + offset, posY: 0, posX: -50, speedX: 1, speedY: 0 });
 }
 
@@ -291,7 +295,6 @@ function update() {
     ) {
       dead = true;
       sound.pause();
-      return;
     }
   }
 }
@@ -325,8 +328,20 @@ function start() {
 window.addEventListener("keydown", (event) => {
   keys[event.key] = true;
   if (event.key == " ") {
-    // TODO: remove me
-    console.log(sound.currentTime);
+    if (dead) {
+      dead = false;
+      sound.currentTime = 0;
+      elephant.position.x = 0;
+      elephant.position.y = 0;
+      for (const myPresent of presents) {
+        if (myPresent.obj) {
+          scene.remove(myPresent.obj);
+          myPresent.obj = undefined;
+        }
+      }
+    }
+    if (sound.paused) sound.play();
+    else sound.pause();
   }
 });
 
@@ -343,6 +358,8 @@ window.onclick = () => {
     if (dead) {
       dead = false;
       sound.currentTime = 0;
+      elephant.position.x = 0;
+      elephant.position.y = 0;
       for (const myPresent of presents) {
         if (myPresent.obj) {
           scene.remove(myPresent.obj);
