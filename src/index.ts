@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import matcapPorcelain from "/matcap-porcelain-white.jpeg?url";
-import * as Stats from "stats.js";
+import Stats from "stats.js";
 
 let stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom

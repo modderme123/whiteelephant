@@ -1,8 +1,9 @@
 {
-    "compilerOptions": {
-        "module": "esnext",
-        "lib": ["DOM", "ESNext"],
-        "strict": true,
-        "types": ["vite/client"]
-    }
+  "compilerOptions": {
+    "module": "esnext",
+    "lib": ["DOM", "ESNext"],
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client"]
+  }
 }
